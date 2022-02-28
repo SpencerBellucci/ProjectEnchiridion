@@ -242,6 +242,11 @@ function Form() {
     )
   }
 
+  function testFunc() {
+    
+    console.log("test")
+  }
+
   // create todo item
   const createName = async () => {
     try {
