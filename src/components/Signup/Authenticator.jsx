@@ -3,11 +3,12 @@ import { Amplify, Auth } from 'aws-amplify';
 import {userAuth} from '../Homepage/UserButton';
 import '../../CSS/Signup/Authenticator.css';
 
-// graphql imports
-
-import { API } from 'aws-amplify'
-import { createTodo, listTodos, updateTodo, deleteTodo } from './graphql/todo'
-
+//------ graphql imports ------//
+import { API, graphqlOperation } from 'aws-amplify'
+// import mutations
+import { createTodo, updateTodo, deleteTodo } from '../../graphql/mutations'
+// import queries
+import { listTodos } from '../../graphql/queries';
 
 // sign up auth
 async function signUp(username, password, email) {
@@ -225,36 +226,56 @@ function Form() {
   // query button
   function QueryButton() {
     return (
-      <div onClick={queryName} >Query Me</div>
+      <div onClick={queryName}>Query Me</div>
     )
   }
 
-  function CreateName() {
+  function CreateButton() {
     return (
-      <div onClick={createName} >Create Me</div>
+      <div onClick={createName}>Create Me</div>
+    )
+  }
+
+  function DeleteButton() {
+    return (
+      <div onClick={deleteName}>Delete Me</div>
     )
   }
 
   // create todo item
-  async function createName() {
+  const createName = async () => {
     try {
-      const result = await API.graphql(createTodo, {
+      await API.graphql(graphqlOperation(createTodo, {
         input: {
           name: 'My first todo!'
         }
-      })
+      }))
     } catch(err) {
-      console.log("Error creating data")
+      console.log("Error creating data", err)
     }
   }
 
   // query todo item
-  async function queryName() {
+  const queryName = async () => {
     try {
-      const result = await API.graphql(listTodos)
+      const result = await API.graphql(graphqlOperation(listTodos))
       console.log(result)
     } catch(err) {
-      console.log("Error retrieving data")
+      console.log("Error retrieving data", err)
+    }
+  }
+
+  // delete todo item
+  const deleteName = async () => {
+    try {
+      const result = await API.graphql(graphqlOperation(deleteTodo, {
+        input: {
+          id: "<...>",
+        }
+      }))
+      console.log(result)
+    } catch(err) {
+      console.log("Error deleteing data", err)
     }
   }
 
@@ -286,8 +307,9 @@ function Form() {
           <div className="submit_button" onClick={submitForm}>{getSubmitText()}</div>
         </div>
       </span>
-      <CreateName/>
+      <CreateButton/>
       <QueryButton/>
+      <DeleteButton/>
       <GetCode/>
     </>  
   );

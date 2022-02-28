@@ -33,7 +33,7 @@
     }
   },
   "api": {
-    "enchiridion": {
+    "TestEnchiridion": {
       "service": "AppSync",
       "providerPlugin": "awscloudformation",
       "output": {
