@@ -236,17 +236,6 @@ function Form() {
     )
   }
 
-  function DeleteButton() {
-    return (
-      <div onClick={deleteName}>Delete Me</div>
-    )
-  }
-
-  function testFunc() {
-    
-    console.log("test")
-  }
-
   // create todo item
   const createName = async () => {
     try {
@@ -267,20 +256,6 @@ function Form() {
       console.log(result)
     } catch(err) {
       console.log("Error retrieving data", err)
-    }
-  }
-
-  // delete todo item
-  const deleteName = async () => {
-    try {
-      const result = await API.graphql(graphqlOperation(deleteTodo, {
-        input: {
-          id: "<...>",
-        }
-      }))
-      console.log(result)
-    } catch(err) {
-      console.log("Error deleteing data", err)
     }
   }
 
@@ -314,7 +289,6 @@ function Form() {
       </span>
       <CreateButton/>
       <QueryButton/>
-      <DeleteButton/>
       <GetCode/>
     </>  
   );
